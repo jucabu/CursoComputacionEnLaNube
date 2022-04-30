@@ -1,0 +1,102 @@
+#!/bin/bash
+
+echo "*** actualizando apt-get ***"
+sudo apt-get update -y
+sudo apt-get upgrade -y
+
+echo "****** Instalar lxd ******"
+sudo apt install lxd
+
+echo "****** crear grupo ******"
+newgrp lxd
+
+echo "****** configrar cluster ******"
+cat <<EOF | lxd init --preseed
+
+config:
+  core.https_address: 192.168.100.101:8443
+  core.trust_password: Francesco9
+networks:
+- config:
+    bridge.mode: fan
+    fan.underlay_subnet: auto
+  description: ""
+  name: lxdfan0
+  type: ""
+storage_pools:
+- config: {}
+  description: ""
+  name: local
+  driver: dir
+profiles:
+- config: {}
+  description: ""
+  devices:
+    eth0:
+      name: eth0
+      network: lxdfan0
+      type: nic
+    root:
+      path: /
+      pool: local
+      type: disk
+  name: default
+cluster:
+  server_name: ubuntuvm01
+  enabled: true
+  member_config: []
+  cluster_address: ""
+  cluster_certificate: ""
+  server_address: ""
+  cluster_password: ""
+  cluster_certificate_path: ""
+  cluster_token: ""
+EOF
+
+sleep 20
+
+echo "*** CREAR CONTENEDOR HAPROXY ***"
+
+echo "*** Implementando contenedor haproxy"
+sudo lxc init ubuntu:20.04 haproxy
+
+sleep 20
+
+sudo lxc start haproxy
+
+sleep 20
+
+echo "*** actualizando contenedor ***"
+sudo lxc exec haproxy -- apt-get update
+sudo lxc exec haproxy -- apt-get install haproxy -y
+
+echo "*** actualizando configuracion baleanseador ***"
+sudo lxc file push /vagrant/haproxy.cfg haproxy/etc/haproxy/haproxy.cfg
+
+echo "*** renicio ***"
+sudo lxc exec haproxy -- sudo systemctl restart haproxy
+
+echo "*** remapeando puertos ***"
+sudo lxc config device add haproxy http proxy listen=tcp:0.0.0.0:80 connect=tcp:127.0.0.1:80
+
+echo "*** actualizando WebErrores ***"
+sudo lxc file push /vagrant/503.html haproxy/etc/haproxy/errors/503.http
+
+echo "*** renicio ***"
+sudo lxc exec haproxy -- sudo systemctl restart haproxy
+
+echo "*** copia certificado ***"
+sed ':a;N;$!ba;s/\n/\n\n/g' /var/snap/lxd/common/lxd/cluster.crt > /vagrant/certificado
+
+
+
+
+
+
+
+
+
+
+
+
+

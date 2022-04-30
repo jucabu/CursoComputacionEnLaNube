@@ -1,0 +1,11 @@
+ 240.101.0.196 server1
+ 240.102.0.229 server2
+ 240.103.0.128 server3
+
+
+ 240.102.0.52 backup1
+ 240.103.0.8  backup2
+
+ 240.101.0.82 haproxy
+
+ /etc/haproxy/errors/503.http
