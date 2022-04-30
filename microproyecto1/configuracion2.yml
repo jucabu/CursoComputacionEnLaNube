@@ -1,0 +1,46 @@
+config: {}
+networks: []
+storage_pools: []
+profiles: []
+cluster:
+  server_name: ubuntuvm03
+  enabled: true
+  member_config:
+  - entity: storage-pool
+    name: local
+    key: source
+    value: ""
+    description: '"source" property for storage pool "local"'
+  cluster_address: 182.168.100.101:8443
+  cluster_certificate: |
+    -----BEGIN CERTIFICATE-----
+
+MIICDjCCAZWgAwIBAgIQSCUJEejhLeQ1olrFVLMpEjAKBggqhkjOPQQDAzA4MRww
+
+GgYDVQQKExNsaW51eGNvbnRhaW5lcnMub3JnMRgwFgYDVQQDDA9yb290QHVidW50
+
+dXZtMDEwHhcNMjIwNDI5MjMxOTM2WhcNMzIwNDI2MjMxOTM2WjA4MRwwGgYDVQQK
+
+ExNsaW51eGNvbnRhaW5lcnMub3JnMRgwFgYDVQQDDA9yb290QHVidW50dXZtMDEw
+
+djAQBgcqhkjOPQIBBgUrgQQAIgNiAATEiMwnGS4I0SwV0QOveJVZHhvVTIYqo1ZP
+
+jVoR5+7/TloB3nUYF8lSkRl4zkkLcXuDczIT0n/KmZ2r1w1tiSALX4qRGl05TNNH
+
+R5TwuInNSv/JClWd6wHJvq3uEjB6B02jZDBiMA4GA1UdDwEB/wQEAwIFoDATBgNV
+
+HSUEDDAKBggrBgEFBQcDATAMBgNVHRMBAf8EAjAAMC0GA1UdEQQmMCSCCnVidW50
+
+dXZtMDGHBH8AAAGHEAAAAAAAAAAAAAAAAAAAAAEwCgYIKoZIzj0EAwMDZwAwZAIw
+
+dL+cBViMHmAbJBFfQSzA87lD+F2DdNx3ubMvNLcbZdnCfKBxNim1Bav27Rej889r
+
+AjAkj1zNF9c5RBQvhUZshjKOwu27QXa42vH5WmYRWbWJ0Nu1bXPbNR1o7fHhvvkz
+
+R/o=
+
+-----END CERTIFICATE-----
+  server_address: 192.168.100.103:8443
+  cluster_password: ""
+  cluster_certificate_path: ""
+  cluster_token: ""
